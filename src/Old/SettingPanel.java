@@ -6,7 +6,7 @@ import java.awt.event.KeyEvent;
 import java.lang.management.ClassLoadingMXBean;
 import java.util.Arrays;
 
-public class SettingPanel extends JPanel {
+/*public class SettingPanel extends JPanel {
     //Количество переменных и ограничений - по 2 соответственно
     int countVar = 2;
     int countConstr = 2;
@@ -85,3 +85,4 @@ public class SettingPanel extends JPanel {
         }
     }
 }
+*/
