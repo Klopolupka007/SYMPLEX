@@ -34,7 +34,11 @@ public class GlobalPanel extends JPanel {
         functionPanel.Processing(); systemB.Processing();
         functionPanel.FieldsCreate(countVar, countConstr);
         add(functionPanel);
+
+        systemB.Processing(); systemB.FieldsCreate(countVar, countConstr);
         add(systemB);
+
+
         add(matrix);
     }
 

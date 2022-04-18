@@ -125,6 +125,6 @@ public class FunctionPanel extends JPanel {
             if (i!=constr-1+count) temp.append("0*x").append(i + 1).append(" + ");
             else temp.append("0*x").append(i + 1).append(".");
         }
-    return String.valueOf(temp);
+        return String.valueOf(temp);
     }
 }
