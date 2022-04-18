@@ -34,7 +34,7 @@ public class SystemPanel extends JPanel {
     void FieldsCreate(int count, int constr){
         //text - поля ввода
         //labelX - надписи переменных x, которые итерируются с 0 до количества переменных x
-        list = new Double[constr+1][count+1];
+        list = new Double[constr][count+1];
 
         JTextField[][] text = new JTextField[constr][count+1];
         JLabel[][] labelX = new JLabel[constr][count];
@@ -56,8 +56,6 @@ public class SystemPanel extends JPanel {
             text[i][count].setFont(ColorFont.simple);
             text[i][count].setBounds(55 + (count * 80), 40 + (i * 40), 40, 20);
             add(text[i][count]);
-            listen.finalI = i;
-            listen.finalJ = count;
 
             listen.count = count;
             listen.constr = constr;
@@ -85,9 +83,6 @@ public class SystemPanel extends JPanel {
                 add(labelX[i][j]); add(text[i][j]);
 
                 //Listener для обработки ввода в ячейки поля ввода и еще некоторых других функциях (описаны ниже)
-                listen.finalI = i;
-                listen.finalJ = j;
-
                 listen.count = count;
                 listen.constr = constr;
 
@@ -128,29 +123,45 @@ public class SystemPanel extends JPanel {
 */
 }
 class FieldsListen implements ActionListener{
-    int finalI, finalJ, count, constr;
+    int count, constr;
     JTextField[][] text;
     Double[][] list;
     JLabel[][] labelX;
+    int finalI, finalJ;
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        for (int i =0; i<constr; i++){
+            for (int j =0; j<=count; j++) {
+                if (e.getSource() == text[i][j]) {
+                    finalI = i;
+                    finalJ = j;
+                    break;
+                }
+            }
+        }
         if (!text[finalI][finalJ].getText().equals(""))
             list[finalI][finalJ] = Double.valueOf(text[finalI][finalJ].getText());
         //labelX[finalI][finalJ].setText(CreateString1(count, constr));
 
-        if (finalI+1!=constr) {
-            if (finalJ+1!=count+1) {
-                e.setSource(text[finalI][finalJ + 1]);
+        //Проверяем, не последний ли элемент в строке
+        if (finalJ != count) {
+                e.setSource(text[finalI][finalJ+1]);
                 ((JTextField) e.getSource()).requestFocusInWindow();
-            } else {
-                e.setSource(text[finalI + 1][0]);
+        }
+        //Если последний:
+        else {
+            //Проверяем, не последний ли элемент в матрице:
+            if(finalI != constr-1) {
+                e.setSource(text[finalI+1][0]);
                 ((JTextField) e.getSource()).requestFocusInWindow();
             }
-        }
-        else {
-            e.setSource(text[0][0]); ((JTextField) e.getSource()).requestFocusInWindow();
+            //Последний:
+            else {
+                e.setSource(text[0][0]); ((JTextField) e.getSource()).requestFocusInWindow();
+            }
         }
     }
+
 }
 
