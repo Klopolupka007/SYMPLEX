@@ -3,11 +3,17 @@ import javax.swing.*;
 public class Main extends JFrame {
     Main(){
         setTitle("Symplex method – выполнил Панкрухин Максим – ИКБО-04-20");
-        setSize(1024, 800);
+        setSize(1040, 520);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setResizable(false);
-        add(new GlobalPanel());
+
+        JScrollPane scroll = new JScrollPane(new GlobalPanel());
+        scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        scroll.getVerticalScrollBar().setUnitIncrement(16);
+        scroll.setSize(1040, 520);
+        add(scroll);
+
         setVisible(true);
     }
 

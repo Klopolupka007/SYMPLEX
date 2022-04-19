@@ -35,19 +35,23 @@ public class SystemPanel extends JPanel {
         //text - поля ввода
         //labelX - надписи переменных x, которые итерируются с 0 до количества переменных x
         list = new Double[constr][count+1];
+        for (int i=0; i<constr; i++){
+            for (int j=0; j<=count; j++){
+                list[i][j] = 1.0;
+            }
+        }
 
         JTextField[][] text = new JTextField[constr][count+1];
         JLabel[][] labelX = new JLabel[constr][count];
 
         FieldsListen listen = new FieldsListen();
+
         /*
         labelX[count] = new JLabel(FieldsListen.CreateString1(count, constr));
         labelX[count].setFont(ColorFont.simple);
         labelX[count].setBounds(215, 53, 400,20);
         add(labelX[count]);
         */
-
-
 
         //Создаем и добавляем компоненты текстовых полей в систему:
         for (int i =0; i<constr; i++) {
@@ -64,9 +68,6 @@ public class SystemPanel extends JPanel {
             listen.list = list;
 
             text[i][count].addActionListener(listen);
-
-
-
         }
         for (int i=0;i<constr; i++){
             for (int j = 0; j<count; j++ ){

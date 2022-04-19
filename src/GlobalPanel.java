@@ -16,9 +16,8 @@ public class GlobalPanel extends JPanel {
     int countVar = 2;
     int countConstr = 2;
 
-
     GlobalPanel(){
-        setPreferredSize(new Dimension(1024, 800));
+        setPreferredSize(new Dimension(1024, 478));
         setLayout(null);
         //Настраиваем и отображаем окно настроек
         Processing();
@@ -40,6 +39,7 @@ public class GlobalPanel extends JPanel {
 
         calculatings.Processing(functionPanel.list, systemB.list, countVar, countConstr);
 
+        ButtonStart();
         add(matrix);
     }
 
@@ -132,5 +132,23 @@ public class GlobalPanel extends JPanel {
 
         //Обновление матрицы
         add(matrix);
+    }
+
+    //Кнопка старта вычислений - после нажатия запускается процесс вычисления по симплексному методу и построение матриц визуально
+    void ButtonStart(){
+        JButton StartButton = new JButton("Start");
+        StartButton.setBounds(20, 445, 100, 30);
+        StartButton.setOpaque(true);
+        StartButton.setBackground(ColorFont.colorGreen);
+        StartButton.setFocusPainted(false);
+        add(StartButton);
+
+        StartButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //Обновление вычислений
+                calculatings.Processing(functionPanel.list, systemB.list, countVar, countConstr);
+            }
+        });
     }
 }

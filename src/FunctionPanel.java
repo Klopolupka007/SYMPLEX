@@ -75,10 +75,12 @@ public class FunctionPanel extends JPanel {
                     //Если было изменено количество переменных x - меняется размер динамического массива по мере
                     //ввода текста в определенные текстовые поля.
                     if (finalI >=list.size()){
-                        list.add(finalI, Double.valueOf(text[finalI].getText()));
+                        if(!text[finalI].getText().equals("")) list.add(finalI, Double.valueOf(text[finalI].getText()));
+                        else list.add(finalI, 1.0);
                     }
                     else {
-                        list.set(finalI, Double.valueOf(text[finalI].getText()));
+                        if (!text[finalI].getText().equals("")) list.set(finalI, Double.valueOf(text[finalI].getText()));
+                        else list.set(finalI, 1.0);
                     }
 
                     //Затем меняется надпись целевой функции с каноническим видом посредством вызова функции создания соответствующей строки String
