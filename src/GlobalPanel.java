@@ -121,8 +121,7 @@ public class GlobalPanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //Обновление вычислений
-                Calculatings calculations = new Calculatings();
-                calculations.Processing(functionPanel.list, systemB.list, countVar, countConstr);
+                Calculatings calculations = new Calculatings(functionPanel.list, systemB.list, countVar, countConstr);
                 setPreferredSize(new Dimension(1024, (478)*(calculations.iterator_matrix+2)));
                 if (matrixPanel!= null) matrixPanel.setVisible(false);
                 matrixPanel = new MatrixPanel(calculations.iterator_matrix, countVar, countConstr);

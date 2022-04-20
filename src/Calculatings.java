@@ -20,29 +20,23 @@ public class Calculatings {
     Double[] ChangesHorizontal;
     Double[] ChangesVertical;
 
-    int iterator_matrix;
+    int iterator_matrix=0;
     MathContext context = new MathContext(2, RoundingMode.HALF_UP);
     //Класс реализует вычисления по итерациям матриц, пока не будет получено оптимальное решение
     //Все элементы новых матриц записываются в абсолютно чистый текстовый файл, где также будут указываться координаты
     //разрешающих элементов матриц и оптимальное решение. Также, для наглядности реализованы вычисления в письменной форме
     //и проверка оптимальности, которые будут записаны в конец файла.
-    void Processing(ArrayList<Double> Function, Double[][] System, int count, int constr){
+
+    Calculatings(ArrayList<Double> Function, Double[][] System, int count, int constr){
+        Path file = Path.of("src\\log.txt");
         try {
-
-
-
             ChangesHorizontal = new Double[count]; ChangesVertical = new Double[constr];
             Double[] F_String = new Double[count+1];
-
-
             //Заполняем вертикаль нулями
             Arrays.fill(ChangesVertical, 0.0);
             for (int i =0; i<count; i++){
                 ChangesHorizontal[i] = Function.get(i);
             }
-
-
-            Path file = Path.of("src\\log.txt");
             if (Files.exists(file))
                 Files.delete(file);
             Files.createFile(Path.of("src\\log.txt"));
@@ -52,7 +46,7 @@ public class Calculatings {
             for (int i =0; i<count; i++){
                 temp.append(ChangesHorizontal[i]).append(" ");
             }
-            Files.write(file, Collections.singleton("X C(j) " + temp + "X"), StandardOpenOption.APPEND);
+            Files.write(file, Collections.singleton("X C(j) " + temp + "X"));
 
             //2 строка матрицы
             temp = new StringBuilder("");
@@ -90,7 +84,6 @@ public class Calculatings {
             for(int i =0; i<ALL_MATRIX.size(); i++){
                 Files.write(file, Collections.singleton(ALL_MATRIX.get(i)), StandardOpenOption.APPEND);
             }
-
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -222,6 +215,7 @@ public class Calculatings {
                 ALL_MATRIX.add(it_str, "Result: "+Double.valueOf(String.valueOf(new BigDecimal(F_string[count], context)))); it_str++;
             }
         }
+        if (iterator_matrix == count) iterator_matrix--;
         return ALL_MATRIX;
     }
 }

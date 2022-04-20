@@ -24,6 +24,11 @@ public class MatrixPanel extends JPanel {
             Matrix matrix = new Matrix(reader, count, i, constr, iter_matrix+1);
             add(matrix);
         }
+        try {
+            reader.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
 class Matrix extends JPanel{
