@@ -6,9 +6,6 @@ import java.util.Arrays;
 
 public class GlobalPanel extends JPanel {
 
-
-    Calculatings calculatings = new Calculatings();
-
     SystemPanel systemB = new SystemPanel();
     MatrixPanel matrix = new MatrixPanel();
     FunctionPanel functionPanel = new FunctionPanel();
@@ -37,7 +34,7 @@ public class GlobalPanel extends JPanel {
         systemB.Processing(); systemB.FieldsCreate(countVar, countConstr);
         add(systemB);
 
-        calculatings.Processing(functionPanel.list, systemB.list, countVar, countConstr);
+        //calculatings.Processing(functionPanel.list, systemB.list, countVar, countConstr);
 
         ButtonStart();
         add(matrix);
@@ -128,7 +125,7 @@ public class GlobalPanel extends JPanel {
         add(systemB);
 
         //Обновление вычислений
-        calculatings.Processing(functionPanel.list, systemB.list, countVar, countConstr);
+        //calculatings.Processing(functionPanel.list, systemB.list, countVar, countConstr);
 
         //Обновление матрицы
         add(matrix);
@@ -147,6 +144,7 @@ public class GlobalPanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //Обновление вычислений
+                Calculatings calculatings = new Calculatings();
                 calculatings.Processing(functionPanel.list, systemB.list, countVar, countConstr);
             }
         });
