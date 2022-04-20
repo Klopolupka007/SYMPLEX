@@ -10,9 +10,6 @@ public class FunctionPanel extends JPanel {
     //Хранение данных
     ArrayList<Double> list =new ArrayList<>(2);
 
-    public ArrayList<Double> getList() {
-        return list;
-    }
 
     //Формирование панели
     public void Processing (){
@@ -64,7 +61,6 @@ public class FunctionPanel extends JPanel {
             else labelX[i] = new JLabel(CreateString(i, false));
             labelX[i].setFont(ColorFont.simple);
             labelX[i].setBounds(257+(i*80), 20, 45,20);
-
             add(labelX[i]); add(text[i]);
 
             //Добавляем listener для обработки ввода в поля ввода text[i]

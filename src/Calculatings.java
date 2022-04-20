@@ -19,6 +19,8 @@ public class Calculatings {
     //Данные массивы реализуют изменения в шапках матрицы - в C(j) и C(в)
     Double[] ChangesHorizontal;
     Double[] ChangesVertical;
+
+    int iterator_matrix;
     MathContext context = new MathContext(2, RoundingMode.HALF_UP);
     //Класс реализует вычисления по итерациям матриц, пока не будет получено оптимальное решение
     //Все элементы новых матриц записываются в абсолютно чистый текстовый файл, где также будут указываться координаты
@@ -50,7 +52,7 @@ public class Calculatings {
             for (int i =0; i<count; i++){
                 temp.append(ChangesHorizontal[i]).append(" ");
             }
-            Files.write(file, Collections.singleton("X C(j) " + temp), StandardOpenOption.APPEND);
+            Files.write(file, Collections.singleton("X C(j) " + temp + "X"), StandardOpenOption.APPEND);
 
             //2 строка матрицы
             temp = new StringBuilder("");
@@ -63,22 +65,22 @@ public class Calculatings {
             //3+ строки матрицы
             for (int i =0; i<constr; i++){
                 temp = new StringBuilder("");
-                temp.append(ChangesVertical[i]).append(" x").append(count + 1 + i).append(" ");
+                temp.append(ChangesVertical[i]).append(" x").append(count + 1 + i);
                 for (int j =0; j<=count; j++){
-                    temp.append(System[i][j]).append(" ");
+                    temp.append(" ").append(System[i][j]);
                 }
                 Files.write(file, Collections.singleton(temp), StandardOpenOption.APPEND);
             }
 
             //f строка
-            temp = new StringBuilder("X F ");
+            temp = new StringBuilder("X F");
             for (int i=0; i<=count; i++){
                 F_String[i] = 0.0;
                 for (int j =0; j <constr; j++){
                     F_String[i] += System[j][i]*ChangesVertical[j];
                 }
                 if (i!=count) F_String[i] -= ChangesHorizontal[i];
-                temp.append(F_String[i]).append(" ");
+                temp.append(" ").append(F_String[i]);
             }
             Files.write(file, Collections.singleton(temp), StandardOpenOption.APPEND); //После этой строки исходная матрица готова
 
@@ -98,7 +100,7 @@ public class Calculatings {
     ArrayList <String> MatrixCreate (Double[] F_string, Double[] ChangesHorizontal, Double[] ChangesVertical, Double[][] System, int count, int constr){
         boolean result = false;
         ArrayList <String> ALL_MATRIX = new ArrayList<>();
-        int iterator_matrix = 0, it_str =0;
+        iterator_matrix = 0; int it_str =0;
 
         int XCord = 0, YCord = 0;
         double RE;
@@ -119,8 +121,7 @@ public class Calculatings {
                 }
             }
             RE = System[XCord][YCord];
-            ALL_MATRIX.add(it_str, "RE_cords = " + XCord + " " + YCord +" RE = "+ RE); it_str++;
-            ALL_MATRIX.add(it_str, "Итерация " + iterator_matrix); it_str ++;
+            ALL_MATRIX.add(it_str, XCord + " " + YCord); it_str++;
 
             Double temp = ChangesHorizontal[YCord];
             ChangesHorizontal[YCord] = ChangesVertical[XCord];
@@ -178,7 +179,7 @@ public class Calculatings {
             for (int i =0; i<count; i++){
                 buff.append(ChangesHorizontal[i]).append(" ");
             }
-            ALL_MATRIX.add(it_str, "X C(j) " + buff); it_str++;
+            ALL_MATRIX.add(it_str, "X C(j) " + buff + "X"); it_str++;
 
             //2 строка матрицы
             buff = new StringBuilder("");
@@ -190,22 +191,22 @@ public class Calculatings {
             //3+ строки матрицы
             for (int i =0; i<constr; i++){
                 buff = new StringBuilder("");
-                buff.append(ChangesVertical[i]).append(" x").append(count + 1 + i).append(" ");
+                buff.append(ChangesVertical[i]).append(" x").append(count + 1 + i);
                 for (int j =0; j<=count; j++){
-                    buff.append(Double.valueOf(String.valueOf(new BigDecimal(Clone[i][j], context)))).append(" ");
+                    buff.append(" ").append(Double.valueOf(String.valueOf(new BigDecimal(Clone[i][j], context))));
                 }
                 ALL_MATRIX.add(it_str, String.valueOf(buff)); it_str++;
             }
 
             //f строка
-            buff = new StringBuilder("X F ");
+            buff = new StringBuilder("X F");
             for (int i=0; i<=count; i++){
                 F_string_clone[i] = 0.0;
                 for (int j =0; j <constr; j++){
                     F_string_clone[i] += Clone[j][i]*ChangesVertical[j];
                 }
                 if (i!=count) F_string_clone[i] -= ChangesHorizontal[i];
-                buff.append(Double.valueOf(String.valueOf(new BigDecimal(F_string_clone[i], context)))).append(" ");
+                buff.append(" ").append(Double.valueOf(String.valueOf(new BigDecimal(F_string_clone[i], context))));
             }
             ALL_MATRIX.add(it_str, String.valueOf(buff)); it_str++;
             for (int i =0; i<=count; i++) F_string[i] = F_string_clone[i];

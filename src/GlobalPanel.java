@@ -5,41 +5,31 @@ import java.awt.event.ActionListener;
 import java.util.Arrays;
 
 public class GlobalPanel extends JPanel {
-
     SystemPanel systemB = new SystemPanel();
-    MatrixPanel matrix = new MatrixPanel();
     FunctionPanel functionPanel = new FunctionPanel();
     //Количество переменных и ограничений - по 2 соответственно
     int countVar = 2;
     int countConstr = 2;
-
     GlobalPanel(){
-        setPreferredSize(new Dimension(1024, 478));
+        setPreferredSize(new Dimension(1024, 520));
         setLayout(null);
+        setBackground(new Color(67,64,62));
         //Настраиваем и отображаем окно настроек
         Processing();
     }
-
     public void Processing(){
         //Создаем labels "Настройки", "Количество переменных" и "Количество ограничений":
         LabelCreate();
         //Создаем поля ввода для переменных и ограничений
         TextFieldCreate();
-
         //Первичное создание объектов матрицы, системы и целевой функции
         functionPanel.Processing(); systemB.Processing();
         functionPanel.FieldsCreate(countVar, countConstr);
         add(functionPanel);
-
         systemB.Processing(); systemB.FieldsCreate(countVar, countConstr);
         add(systemB);
-
-        //calculatings.Processing(functionPanel.list, systemB.list, countVar, countConstr);
-
         ButtonStart();
-        add(matrix);
     }
-
     //Надписи для настройки функции и системы
     void LabelCreate(){
         String [] bd = {"Настройки", "Количество переменных:", "Количество ограничений:"};
@@ -51,7 +41,6 @@ public class GlobalPanel extends JPanel {
             add(labels[i]);
         } labels[0].setFont(ColorFont.titles);
     }
-
     //Функция для обеспечения настройки количества переменных и ограничений
     JTextField[] textFields = new JTextField[2];
     void TextFieldCreate() {
@@ -62,7 +51,6 @@ public class GlobalPanel extends JPanel {
             textFields[i].setSize(20, 20);
             textFields[i].setLocation(220, 35 + ((i + 1) * 23));
             add(textFields[i]);
-
             //Добавляем Listener для:
             //   1. Перевод текста из полей ввода в соответствующие им переменные
             //   2. Декоративное оформление перехода из одного поля в другое простым нажатием на ENTER
@@ -87,14 +75,12 @@ public class GlobalPanel extends JPanel {
                         e.setSource(textFields[Arrays.asList(textFields).indexOf((JTextField)e.getSource()) - 1]);
                         ((JTextField) e.getSource()).requestFocusInWindow();
                     }
-
                     //Третий пункт
                     //Делаем обновление всех панелек
                     initObjects();
                 }
             });
         }
-
         //Бесполезно, но зато красивенько стало...
         //Декоративная панель
         JLabel back = new JLabel();
@@ -102,9 +88,7 @@ public class GlobalPanel extends JPanel {
         back.setBackground(ColorFont.colorPanel);
         back.setBounds(20, 20, 250, 100);
         add(back);
-
     }
-
     //Та самая функция обновления панелек с остальными элементами метода
     //"Обновление" происходит путем удаления из памяти неактуальных объектов глобальной панели и замены их на новые
     void initObjects(){
@@ -123,14 +107,8 @@ public class GlobalPanel extends JPanel {
         systemB.Processing();
         systemB.FieldsCreate(countVar, countConstr);
         add(systemB);
-
-        //Обновление вычислений
-        //calculatings.Processing(functionPanel.list, systemB.list, countVar, countConstr);
-
-        //Обновление матрицы
-        add(matrix);
     }
-
+    MatrixPanel matrixPanel;
     //Кнопка старта вычислений - после нажатия запускается процесс вычисления по симплексному методу и построение матриц визуально
     void ButtonStart(){
         JButton StartButton = new JButton("Start");
@@ -139,13 +117,17 @@ public class GlobalPanel extends JPanel {
         StartButton.setBackground(ColorFont.colorGreen);
         StartButton.setFocusPainted(false);
         add(StartButton);
-
         StartButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //Обновление вычислений
-                Calculatings calculatings = new Calculatings();
-                calculatings.Processing(functionPanel.list, systemB.list, countVar, countConstr);
+                Calculatings calculations = new Calculatings();
+                calculations.Processing(functionPanel.list, systemB.list, countVar, countConstr);
+                setPreferredSize(new Dimension(1024, (478)*(calculations.iterator_matrix+2)));
+                if (matrixPanel!= null) matrixPanel.setVisible(false);
+                matrixPanel = new MatrixPanel(calculations.iterator_matrix, countVar, countConstr);
+                matrixPanel.setVisible(true);
+                add(matrixPanel);
             }
         });
     }
