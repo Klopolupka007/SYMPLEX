@@ -3,9 +3,13 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -15,14 +19,16 @@ public class Calculatings {
     //Данные массивы реализуют изменения в шапках матрицы - в C(j) и C(в)
     Double[] ChangesHorizontal;
     Double[] ChangesVertical;
-
-
+    MathContext context = new MathContext(2, RoundingMode.HALF_UP);
     //Класс реализует вычисления по итерациям матриц, пока не будет получено оптимальное решение
     //Все элементы новых матриц записываются в абсолютно чистый текстовый файл, где также будут указываться координаты
     //разрешающих элементов матриц и оптимальное решение. Также, для наглядности реализованы вычисления в письменной форме
     //и проверка оптимальности, которые будут записаны в конец файла.
     void Processing(ArrayList<Double> Function, Double[][] System, int count, int constr){
         try {
+
+
+
             ChangesHorizontal = new Double[count]; ChangesVertical = new Double[constr];
             Double[] F_String = new Double[count+1];
 
@@ -136,7 +142,7 @@ public class Calculatings {
             //Вычисляем разрешающий столбец
             for (int i=0;i<constr; i++){
                 if (i!= XCord)
-                Clone[i][YCord] = -System[i][YCord]/RE;
+                Clone[i][YCord] = (-System[i][YCord]/RE);
             }
             Clone[XCord][YCord] = RE_new;
 
@@ -158,7 +164,7 @@ public class Calculatings {
                 if (i!=YCord){
                     F_string_clone[i] = ((F_string[i]*RE)-(System[XCord][i]*(-F_string[YCord]/RE)))/RE;
                 }else F_string_clone[i] /= -RE;
-                if (F_string[i]<0) result_temp = false;
+                if (F_string_clone[i]<0) result_temp = false;
             }
             F_string_clone[count] = 0.0;
 
@@ -186,7 +192,7 @@ public class Calculatings {
                 buff = new StringBuilder("");
                 buff.append(ChangesVertical[i]).append(" x").append(count + 1 + i).append(" ");
                 for (int j =0; j<=count; j++){
-                    buff.append(Clone[i][j]).append(" ");
+                    buff.append(Double.valueOf(String.valueOf(new BigDecimal(Clone[i][j], context)))).append(" ");
                 }
                 ALL_MATRIX.add(it_str, String.valueOf(buff)); it_str++;
             }
@@ -199,7 +205,7 @@ public class Calculatings {
                     F_string_clone[i] += Clone[j][i]*ChangesVertical[j];
                 }
                 if (i!=count) F_string_clone[i] -= ChangesHorizontal[i];
-                buff.append(F_string_clone[i]).append(" ");
+                buff.append(Double.valueOf(String.valueOf(new BigDecimal(F_string_clone[i], context)))).append(" ");
             }
             ALL_MATRIX.add(it_str, String.valueOf(buff)); it_str++;
             for (int i =0; i<=count; i++) F_string[i] = F_string_clone[i];
@@ -212,7 +218,7 @@ public class Calculatings {
                 }
             } else {
                 result = true;
-                ALL_MATRIX.add(it_str, "Result: "+F_string[count]); it_str++;
+                ALL_MATRIX.add(it_str, "Result: "+Double.valueOf(String.valueOf(new BigDecimal(F_string[count], context)))); it_str++;
             }
         }
         return ALL_MATRIX;
