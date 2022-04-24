@@ -21,7 +21,7 @@ public class Calculatings {
     Double[] ChangesVertical;
 
     int iterator_matrix=0;
-    MathContext context = new MathContext(2, RoundingMode.HALF_UP);
+    //MathContext context = new MathContext(2, RoundingMode.HALF_UP);
     //Класс реализует вычисления по итерациям матриц, пока не будет получено оптимальное решение
     //Все элементы новых матриц записываются в абсолютно чистый текстовый файл, где также будут указываться координаты
     //разрешающих элементов матриц и оптимальное решение. Также, для наглядности реализованы вычисления в письменной форме
@@ -186,7 +186,7 @@ public class Calculatings {
                 buff = new StringBuilder("");
                 buff.append(ChangesVertical[i]).append(" x").append(count + 1 + i);
                 for (int j =0; j<=count; j++){
-                    buff.append(" ").append(Double.valueOf(String.valueOf(new BigDecimal(Clone[i][j], context))));
+                    buff.append(" ").append(((int) (Clone[i][j]*1000))/1000.0);
                 }
                 ALL_MATRIX.add(it_str, String.valueOf(buff)); it_str++;
             }
@@ -199,7 +199,7 @@ public class Calculatings {
                     F_string_clone[i] += Clone[j][i]*ChangesVertical[j];
                 }
                 if (i!=count) F_string_clone[i] -= ChangesHorizontal[i];
-                buff.append(" ").append(Double.valueOf(String.valueOf(new BigDecimal(F_string_clone[i], context))));
+                buff.append(" ").append(((int) (F_string_clone[i]*1000))/1000.0);
             }
             ALL_MATRIX.add(it_str, String.valueOf(buff)); it_str++;
             for (int i =0; i<=count; i++) F_string[i] = F_string_clone[i];
@@ -212,7 +212,7 @@ public class Calculatings {
                 }
             } else {
                 result = true;
-                ALL_MATRIX.add(it_str, "Result: "+Double.valueOf(String.valueOf(new BigDecimal(F_string[count], context)))); it_str++;
+                ALL_MATRIX.add(it_str, "Result: "+((int) (F_string[count]*1000))/1000.0); it_str++;
             }
         }
         if (iterator_matrix == count) iterator_matrix--;

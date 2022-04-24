@@ -121,7 +121,10 @@ public class GlobalPanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //Обновление вычислений
-                Calculatings calculations = new Calculatings(functionPanel.list, systemB.list, countVar, countConstr);
+                Double[][] tempSys = new Double[countConstr][countVar+1];
+
+                for(int i=0; i<countConstr; i++) for (int j=0; j<=countVar; j++) tempSys[i][j] = systemB.list[i][j];
+                Calculatings calculations = new Calculatings(functionPanel.list, tempSys, countVar, countConstr);
                 setPreferredSize(new Dimension(1024, (478)*(calculations.iterator_matrix+2)));
                 if (matrixPanel!= null) matrixPanel.setVisible(false);
                 matrixPanel = new MatrixPanel(calculations.iterator_matrix, countVar, countConstr);
