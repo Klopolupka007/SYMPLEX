@@ -103,14 +103,15 @@ public class Calculatings {
             boolean result_temp = true;
             Double tempArr;
             RE = 1000000000;
+            int indxTable = searchIndexTable(count, F_string);
             //Находим разрешающий элемент и записываем в буфер для файла:
             for (int i =0; i<constr; i++){
-                tempArr = System[i][count]/System[i][iterator_matrix];
-                if (tempArr<RE){
+                tempArr = System[i][count]/System[i][indxTable];
+                if (tempArr<RE && tempArr>0){
                     RE = tempArr;
                     //Определяем координаты разрешающего элемента матрицы
                     XCord = i;
-                    YCord =iterator_matrix;
+                    YCord =indxTable;
                 }
             }
             RE = System[XCord][YCord];
@@ -217,5 +218,16 @@ public class Calculatings {
         }
         if (iterator_matrix == count) iterator_matrix--;
         return ALL_MATRIX;
+    }
+
+    int searchIndexTable(int count, Double[] F_string){
+        double temp =-1.0; int j=0;
+        for (int i =0; i<count; i++){
+            if (Math.abs(F_string[i])>temp){
+                temp = Math.abs(F_string[i]);
+                j=i;
+            }
+        }
+        return j;
     }
 }
