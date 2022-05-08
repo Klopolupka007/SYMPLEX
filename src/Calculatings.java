@@ -89,8 +89,25 @@ public class Calculatings {
         }
     }
 
+    //Следующие массивы для хранения изменений в порядке переменных вертикальной и горизонтальных шапок Cj и Cв
+    //НАСЛЕДУЮТСЯ В КЛАСС ДЛЯ ДВОЙСТВЕННОЙ ЗАДАЧИ
+    int [] horizontalVar, verticalVar;
+
     //Функция вычисления остальных матриц и оптимального решения
     ArrayList <String> MatrixCreate (Double[] F_string, Double[] ChangesHorizontal, Double[] ChangesVertical, Double[][] System, int count, int constr){
+
+        horizontalVar = new int [count];
+        verticalVar = new int[constr];
+
+        //Заполняем horizontalVar
+        for (int i =0; i<count; i++){
+            horizontalVar[i] = i+1;
+        }
+        //Заполняем verticalVar
+        for (int i=0;i<constr;i++){
+            verticalVar[i] = count+i+1;
+        }
+
         boolean result = false;
         ArrayList <String> ALL_MATRIX = new ArrayList<>();
         iterator_matrix = 0; int it_str =0;
@@ -120,6 +137,12 @@ public class Calculatings {
             Double temp = ChangesHorizontal[YCord];
             ChangesHorizontal[YCord] = ChangesVertical[XCord];
             ChangesVertical[XCord] = temp;
+
+            //Меняем порядок переменных Св и Cj:
+            int tempVar = horizontalVar[YCord];
+            horizontalVar[YCord] = verticalVar[XCord];
+            verticalVar[XCord] = tempVar;
+
 
             Double RE_new = 1/RE;
             //Делаем копию таблицы предыдущей итерации или исходной матрицы, если итерация = 0
@@ -178,14 +201,14 @@ public class Calculatings {
             //2 строка матрицы
             buff = new StringBuilder("");
             for (int i =0; i<count; i++){
-                buff.append("x").append(i+1).append(" ");
+                buff.append("x").append(horizontalVar[i]).append(" ");
             } buff.append("A(0)");
             ALL_MATRIX.add(it_str, "C(в) X " + buff); it_str++;
 
             //3+ строки матрицы
             for (int i =0; i<constr; i++){
                 buff = new StringBuilder("");
-                buff.append(ChangesVertical[i]).append(" x").append(count + 1 + i);
+                buff.append(ChangesVertical[i]).append(" x").append(verticalVar[i]);
                 for (int j =0; j<=count; j++){
                     buff.append(" ").append(((int) (Clone[i][j]*1000))/1000.0);
                 }
@@ -223,7 +246,7 @@ public class Calculatings {
     int searchIndexTable(int count, Double[] F_string){
         double temp =-1.0; int j=0;
         for (int i =0; i<count; i++){
-            if (Math.abs(F_string[i])>temp){
+            if (Math.abs(F_string[i])>temp && F_string[i]<0){
                 temp = Math.abs(F_string[i]);
                 j=i;
             }
