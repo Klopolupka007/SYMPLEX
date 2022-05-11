@@ -2,7 +2,7 @@ import javax.swing.*;
 
 public class Main extends JFrame {
     Main(){
-        setTitle("Symplex method – выполнил Панкрухин Максим – ИКБО-04-20");
+        setTitle("Symplex/Dual method – выполнил Панкрухин Максим – ИКБО-04-20");
         setSize(1040, 520);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
